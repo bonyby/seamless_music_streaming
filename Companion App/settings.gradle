@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "Seamless Music Streaming Companion App"
