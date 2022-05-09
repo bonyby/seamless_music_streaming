@@ -2,7 +2,6 @@ package com.example.seamlessmusiccompanionapp
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Handler
@@ -16,15 +15,18 @@ class BLEController(private val context: Context) {
     fun emit(): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 context,
-                Manifest.permission.BLUETOOTH_SCAN
+                Manifest.permission.BLUETOOTH_ADMIN
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("bleCallback", "not callback, but we have bluetooth permissions!")
+            Log.d("proj", "not callback, but we have bluetooth permissions!")
             val bleScanner = BluetoothAdapter.getDefaultAdapter().bluetoothLeScanner
             handler.postDelayed({
                 bleScanner.stopScan(bleCallback)
-            }, 10000)
+            }, 2000)
             bleScanner.startScan(bleCallback)
+        } else {
+            Log.d("proj", "no bluetooth permissions")
+            return false
         }
 
         return true

@@ -5,13 +5,15 @@ import android.bluetooth.le.ScanResult
 import android.util.Log
 
 class BLECallback : ScanCallback() {
+//    private val leDeviceListAdapter = LeDeviceListAdapter()
+
     override fun onScanFailed(errorCode: Int) {
         super.onScanFailed(errorCode)
-        Log.d("bleCallback", "Failed scan :(")
+        Log.d("seamless proj", "Failed scan :(")
     }
 
     override fun onScanResult(callbackType: Int, result: ScanResult?) {
         super.onScanResult(callbackType, result)
-        Log.d("bleCallback", "SCAN RESULTS!")
+        Log.d("seamless proj", "SCAN RESULTS!: ${result.toString()}")
     }
 }
