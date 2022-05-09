@@ -1,19 +1,20 @@
 package com.example.seamlessmusiccompanionapp
 
+import android.annotation.SuppressLint
+import android.bluetooth.le.AdvertiseCallback
+import android.bluetooth.le.AdvertiseSettings
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.util.Log
 
-class BLECallback : ScanCallback() {
-//    private val leDeviceListAdapter = LeDeviceListAdapter()
-
-    override fun onScanFailed(errorCode: Int) {
-        super.onScanFailed(errorCode)
-        Log.d("seamless proj", "Failed scan :(")
+class BLECallback : AdvertiseCallback() {
+    override fun onStartFailure(errorCode: Int) {
+        super.onStartFailure(errorCode)
+        Log.d("proj", "advertisement failure. Error code: $errorCode")
     }
 
-    override fun onScanResult(callbackType: Int, result: ScanResult?) {
-        super.onScanResult(callbackType, result)
-        Log.d("seamless proj", "SCAN RESULTS!: ${result.toString()}")
+    override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
+        super.onStartSuccess(settingsInEffect)
+        Log.d("proj", "advertisement success: $settingsInEffect")
     }
 }
