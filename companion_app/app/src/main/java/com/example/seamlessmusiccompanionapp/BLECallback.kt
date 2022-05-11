@@ -15,6 +15,6 @@ class BLECallback : AdvertiseCallback() {
 
     override fun onStartSuccess(settingsInEffect: AdvertiseSettings?) {
         super.onStartSuccess(settingsInEffect)
-        Log.d("proj", "advertisement success: $settingsInEffect")
+        Log.d("proj", "advertisement success! $settingsInEffect")
     }
 }
