@@ -1,30 +1,24 @@
 package com.example.seamlessmusiccompanionapp
 
 import android.Manifest
-import android.R
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.seamlessmusiccompanionapp.databinding.ActivityMainBinding
 import com.example.seamlessmusiccompanionapp.ui.main.SectionsPagerAdapter
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
 
     companion object {
-        private const val BLUETOOTH_PERMISSION_CODE1 = 100
-        private const val BLUETOOTH_PERMISSION_CODE2 = 101
+        private const val BLUETOOTH_PERMISSION_CODE = 100
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -50,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.ACCESS_BACKGROUND_LOCATION
         )
         if (checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(permissions1, BLUETOOTH_PERMISSION_CODE1)
+            requestPermissions(permissions1, BLUETOOTH_PERMISSION_CODE)
         } else {
             bleController.emit()
         }
@@ -73,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         for (i in grantResults.indices) {
             Log.d("proj", "grant $i: ${grantResults[i]}")
         }
-        if (requestCode == BLUETOOTH_PERMISSION_CODE1) {
+        if (requestCode == BLUETOOTH_PERMISSION_CODE) {
             Log.d("proj", "a bluetooth request")
         }
     }

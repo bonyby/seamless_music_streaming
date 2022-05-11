@@ -1,22 +1,23 @@
 package com.example.seamlessmusiccompanionapp
 
 import android.Manifest
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.le.AdvertiseData
-import android.bluetooth.le.AdvertiseSettings
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Handler
-import android.os.ParcelUuid
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import org.altbeacon.beacon.*
-import java.nio.charset.Charset
+import org.altbeacon.beacon.Beacon
+import org.altbeacon.beacon.BeaconParser
+import org.altbeacon.beacon.BeaconTransmitter
 import java.util.*
 
 class BLEController(private val context: Context){
-    private val uuid = "ff965a22-aeb2-4be4-b3f7-e9de4dea4a52"
     private val bleCallback = BLECallback()
+    private val packageUUID = UUID.randomUUID().toString()
+
+    init {
+        // Fetch packageUUID if present. Generate new otherwise
+//        val sharedPref = context.getPrefe
+    }
 
     fun emit(): Boolean {
         if (ActivityCompat.checkSelfPermission(
@@ -24,8 +25,9 @@ class BLEController(private val context: Context){
                 Manifest.permission.BLUETOOTH_ADMIN
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+            Log.d("proj", "uuid: $packageUUID")
             val beacon = Beacon.Builder()
-                .setId1(uuid)
+                .setId1(packageUUID)
                 .setId2("1")
                 .setId3("2")
                 .setManufacturer(0x004c)
