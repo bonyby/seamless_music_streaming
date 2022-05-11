@@ -39,12 +39,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
-//        val fab: FloatingActionButton = binding.fab
-//
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
+
         val bleController = BLEController(this)
 
         val permissions1 = arrayOf(
@@ -59,16 +54,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             bleController.emit()
         }
-
-//        if (checkSelfPermission(Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
-//            requestPermissions(permissions2, BLUETOOTH_PERMISSION_CODE2)
-//        }
-
-//        if (shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_SCAN)) {
-//            showExplanation("Permission needed", "give me bluetooth permission", Manifest.permission.BLUETOOTH_SCAN, BLUETOOTH_PERMISSION_CODE)
-//        } else {
-//            requestPermissions(permissions, BLUETOOTH_PERMISSION_CODE)
-//        }
     }
 
     override fun onRequestPermissionsResult(
@@ -77,8 +62,6 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        val snackbar = Snackbar.make(binding.root, "requestCode: $requestCode", 5000)
-//        snackbar.show()
         Log.d(
             "proj",
             "-------\n permissions length: ${permissions.size} \n grantResults length: ${grantResults.size}"
