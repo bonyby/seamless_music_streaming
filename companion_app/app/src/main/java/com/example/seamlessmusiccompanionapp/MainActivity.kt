@@ -16,14 +16,22 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bleController: BLEController
 
     companion object {
+        private var instance: MainActivity? = null
         private const val BLUETOOTH_PERMISSION_CODE = 100
+
+        fun instance(): MainActivity? {
+            return instance
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        instance = this
+        bleController = BLEController(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -34,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
 
-        val bleController = BLEController(this)
 
         val permissions1 = arrayOf(
             Manifest.permission.BLUETOOTH,
@@ -70,5 +77,10 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == BLUETOOTH_PERMISSION_CODE) {
             Log.d("proj", "a bluetooth request")
         }
+    }
+
+    // Getters & setters
+    fun getPackageUUID(): String {
+        return bleController.packageUUID
     }
 }

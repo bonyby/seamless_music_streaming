@@ -13,7 +13,7 @@ import java.util.*
 
 class BLEController(private val context: Activity){
     private val bleCallback = BLECallback()
-    private lateinit var packageUUID: String
+    var packageUUID: String
 
     companion object {
         private const val PACKAGE_UUID_STRING = "packageUUID"
