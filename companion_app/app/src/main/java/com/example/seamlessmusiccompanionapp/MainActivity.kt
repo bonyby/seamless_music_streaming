@@ -53,8 +53,6 @@ class MainActivity : AppCompatActivity() {
         )
         if (checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(permissions1, BLUETOOTH_PERMISSION_CODE)
-        } else {
-            bleController.emit()
         }
     }
 
