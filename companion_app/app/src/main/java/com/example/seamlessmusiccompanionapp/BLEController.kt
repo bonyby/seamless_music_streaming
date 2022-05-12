@@ -1,6 +1,7 @@
 package com.example.seamlessmusiccompanionapp
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
@@ -10,13 +11,26 @@ import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
 import java.util.*
 
-class BLEController(private val context: Context){
+class BLEController(private val context: Activity){
     private val bleCallback = BLECallback()
-    private val packageUUID = UUID.randomUUID().toString()
+    private lateinit var packageUUID: String
+
+    companion object {
+        private const val PACKAGE_UUID_STRING = "packageUUID"
+    }
 
     init {
-        // Fetch packageUUID if present. Generate new otherwise
-//        val sharedPref = context.getPrefe
+        // Fetch packageUUID if present. Generate and save new otherwise
+        val sharedPref = context.getPreferences(Context.MODE_PRIVATE)
+        if(!sharedPref.contains(PACKAGE_UUID_STRING)) {
+            packageUUID = UUID.randomUUID().toString()
+            with(sharedPref.edit()) {
+                putString(PACKAGE_UUID_STRING, packageUUID)
+                apply()
+            }
+        } else {
+            packageUUID = sharedPref.getString(PACKAGE_UUID_STRING, null).toString()
+        }
     }
 
     fun emit(): Boolean {
