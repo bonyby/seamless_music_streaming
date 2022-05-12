@@ -11,12 +11,12 @@ import androidx.viewpager.widget.ViewPager
 import com.example.seamlessmusiccompanionapp.databinding.ActivityMainBinding
 import com.example.seamlessmusiccompanionapp.ui.main.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bleController: BLEController
+    lateinit var settingsController: SettingsController
 
     companion object {
         private var instance: MainActivity? = null
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         instance = this
         bleController = BLEController(this)
+        settingsController = SettingsController()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -79,8 +80,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun updateSettings(data: AppSettingsData) {
+        Log.d("proj", "settings updated")
+        bleController.updateAdvertiseMode(data.advertiseMode)
+    }
+
     // Getters & setters
     fun getPackageUUID(): String {
         return bleController.packageUUID
+    }
+
+    fun getSettingsData(): AppSettingsData {
+        return settingsController.data
     }
 }

@@ -3,4 +3,9 @@
     <string name="tab_text_1">Main</string>
     <string name="tab_text_2">Settings</string>
     <string name="uuid_present_text">UUID: %1$s</string>
+    <string-array name="emit_hz_array">
+        <item>Low (1Hz)</item>
+        <item>Balanced (3hz)</item>
+        <item>High (10Hz)</item>
+    </string-array>
 </resources>
