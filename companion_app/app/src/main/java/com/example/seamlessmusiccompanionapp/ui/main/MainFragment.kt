@@ -46,6 +46,7 @@ class MainFragment() : Fragment() {
     }
 
     private fun updateEmittingVisuals(state: Boolean) {
+        Log.d("proj", "update emitting visuals called")
         textMain.text = if (state) "EMITTING" else "NOT EMITTING"
         textMain.setTextColor(Color.parseColor(if (state) EMITTING_TEXT_COLOR else NOT_EMITTING_TEXT_COLOR))
         textMain.setBackgroundColor(Color.parseColor(if (state) EMITTING_BACKGROUND_COLOR else NOT_EMITTING_BACKGROUND_COLOR))

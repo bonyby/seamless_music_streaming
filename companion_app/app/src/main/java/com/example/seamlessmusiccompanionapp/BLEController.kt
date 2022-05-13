@@ -20,7 +20,10 @@ class BLEController(private val context: Activity) {
     var minor: String = "1"
     var beaconTx: Int = -59
     var emittingListeners = arrayListOf<(Boolean) -> Unit>()
-    private var emitting: Boolean by Delegates.observable(false) { _, _, newValue ->
+    private var emitting: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
+        if (oldValue == newValue) {
+            return@observable
+        }
         emittingListeners.forEach {
             it(newValue)
         }
@@ -35,7 +38,7 @@ class BLEController(private val context: Activity) {
 
     companion object {
         private const val PACKAGE_UUID_STRING = "packageUUID"
-        private const val REFRESH_FREQUENCY = 250L
+        private const val REFRESH_FREQUENCY = 1000L
     }
 
     init {
@@ -112,21 +115,21 @@ class BLEController(private val context: Activity) {
     }
 
     fun updateAdvertiseMode(mode: Int) {
-        if(beaconTransmitter.isStarted) {
+        if (beaconTransmitter.isStarted) {
             beaconTransmitter.stopAdvertising()
         }
         beaconTransmitter.advertiseMode = mode
     }
 
     fun updateAdvertiseTxPower(power: Int) {
-        if(beaconTransmitter.isStarted) {
+        if (beaconTransmitter.isStarted) {
             beaconTransmitter.stopAdvertising()
         }
         beaconTransmitter.advertiseTxPowerLevel = power
     }
 
     fun updateMeasuredTx(tx: Int) {
-        if(beaconTransmitter.isStarted) {
+        if (beaconTransmitter.isStarted) {
             beaconTransmitter.stopAdvertising()
         }
 
