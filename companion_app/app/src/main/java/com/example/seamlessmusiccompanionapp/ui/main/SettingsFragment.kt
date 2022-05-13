@@ -19,6 +19,8 @@ class SettingsFragment() : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     lateinit var hzSpinner: Spinner
+    lateinit var txSpinner: Spinner
+    lateinit var measuredtext: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +45,16 @@ class SettingsFragment() : Fragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 hzSpinner.adapter = adapter
             }
+
+        txSpinner = binding.emitTxPowerSpinner
+        ArrayAdapter.createFromResource(mainInstance, R.array.emit_tx_power_array, android.R.layout.simple_spinner_item)
+            .also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                txSpinner.adapter = adapter
+            }
+
+        measuredtext = binding.measuredPowerEditText
+        measuredtext.setText((-59).toString())
 
         return root
     }

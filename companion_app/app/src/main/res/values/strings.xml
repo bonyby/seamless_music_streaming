@@ -8,4 +8,10 @@
         <item>Balanced (3hz)</item>
         <item>High (10Hz)</item>
     </string-array>
+    <string-array name="emit_tx_power_array">
+        <item>Ultra-low</item>
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
 </resources>

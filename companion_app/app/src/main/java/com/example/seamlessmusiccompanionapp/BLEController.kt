@@ -12,12 +12,21 @@ import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
 import java.util.*
+import kotlin.properties.Delegates
 
 class BLEController(private val context: Activity) {
-    var packageUUID: String
+    var packageUUID: String = ""
+    var major: String = "2"
+    var minor: String = "1"
+    var beaconTx: Int = -59
+    var emittingListeners = arrayListOf<(Boolean) -> Unit>()
+    private var emitting: Boolean by Delegates.observable(false) { _, _, newValue ->
+        emittingListeners.forEach {
+            it(newValue)
+        }
+    }
 
     private val bleCallback = BLECallback()
-    private var advertiseMode = AdvertiseSettings.ADVERTISE_MODE_BALANCED
     private lateinit var beacon: Beacon
     private val beaconParser =
         BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24")
@@ -30,10 +39,12 @@ class BLEController(private val context: Activity) {
     }
 
     init {
-        beaconTransmitter.advertiseMode = advertiseMode
+        beaconTransmitter.advertiseMode = AdvertiseSettings.ADVERTISE_MODE_BALANCED
+        beaconTransmitter.advertiseTxPowerLevel = AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM
 
         // Fetch packageUUID if present. Generate and save new otherwise
         val sharedPref = context.getPreferences(Context.MODE_PRIVATE)
+//        sharedPref.edit().remove(PACKAGE_UUID_STRING).apply()
         if (!sharedPref.contains(PACKAGE_UUID_STRING)) {
             packageUUID = UUID.randomUUID().toString()
             with(sharedPref.edit()) {
@@ -45,13 +56,7 @@ class BLEController(private val context: Activity) {
         }
 
         // Initialize beacon
-        beacon = Beacon.Builder()
-            .setId1(packageUUID)
-            .setId2("1")
-            .setId3("2")
-            .setManufacturer(0x004c)
-            .setTxPower(-59)
-            .build()
+        createBeacon()
 
         // Create an infinite loop of function calls
         // at fixed interval to check if advertising
@@ -65,12 +70,21 @@ class BLEController(private val context: Activity) {
         })
     }
 
+    private fun createBeacon() {
+        beacon = Beacon.Builder()
+            .setId1(packageUUID)
+            .setId2(major)
+            .setId3(minor)
+            .setManufacturer(0x004c)
+            .setTxPower(beaconTx)
+            .build()
+    }
+
     private fun update() {
-        Log.d("proj", "Updating BLEController...")
         val allowed = checkPermissions()
 
         if (allowed) {
-            emit()
+            emitting = emit()
         }
     }
 
@@ -88,6 +102,7 @@ class BLEController(private val context: Activity) {
                 Manifest.permission.BLUETOOTH_ADMIN
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+            Log.d("proj", "Beacon measured Tx: ${beacon.txPower}")
             beaconTransmitter.startAdvertising(beacon, bleCallback)
         } else {
             return false
@@ -97,9 +112,25 @@ class BLEController(private val context: Activity) {
     }
 
     fun updateAdvertiseMode(mode: Int) {
-        beaconTransmitter.stopAdvertising()
+        if(beaconTransmitter.isStarted) {
+            beaconTransmitter.stopAdvertising()
+        }
         beaconTransmitter.advertiseMode = mode
+    }
 
-        emit()
+    fun updateAdvertiseTxPower(power: Int) {
+        if(beaconTransmitter.isStarted) {
+            beaconTransmitter.stopAdvertising()
+        }
+        beaconTransmitter.advertiseTxPowerLevel = power
+    }
+
+    fun updateMeasuredTx(tx: Int) {
+        if(beaconTransmitter.isStarted) {
+            beaconTransmitter.stopAdvertising()
+        }
+
+        beaconTx = tx
+        createBeacon()
     }
 }

@@ -15,7 +15,7 @@ import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var bleController: BLEController
+    lateinit var bleController: BLEController
     lateinit var settingsController: SettingsController
 
     companion object {
@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
-
 
         val permissions1 = arrayOf(
             Manifest.permission.BLUETOOTH,
@@ -81,11 +80,13 @@ class MainActivity : AppCompatActivity() {
     fun updateSettings(data: AppSettingsData) {
         Log.d("proj", "settings updated")
         bleController.updateAdvertiseMode(data.advertiseMode)
+        bleController.updateAdvertiseTxPower(data.advertiseTxPower)
+        bleController.updateMeasuredTx(data.measuredTx)
     }
 
     // Getters & setters
     fun getPackageUUID(): String {
-        return bleController.packageUUID
+        return "${bleController.packageUUID.replace("-", "")}-${bleController.major}-${bleController.minor}"
     }
 
     fun getSettingsData(): AppSettingsData {
