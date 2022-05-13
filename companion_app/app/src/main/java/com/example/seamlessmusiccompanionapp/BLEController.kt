@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.bluetooth.le.AdvertiseSettings
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.util.Log
@@ -34,19 +35,24 @@ class BLEController(private val context: Activity) {
     private val beaconParser =
         BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24")
     private val beaconTransmitter = BeaconTransmitter(context, beaconParser)
-
+    private val sharedPref = context.getPreferences(Context.MODE_PRIVATE)
 
     companion object {
+        private const val ADVERTISE_MODE_STRING = "advertiseMode"
+        private const val ADVERTISE_TX_POWER_STRING = "advertiseTxPower"
+        private const val BEACON_MEASURED_TX = "measuredTx"
         private const val PACKAGE_UUID_STRING = "packageUUID"
         private const val REFRESH_FREQUENCY = 1000L
     }
 
     init {
-        beaconTransmitter.advertiseMode = AdvertiseSettings.ADVERTISE_MODE_BALANCED
-        beaconTransmitter.advertiseTxPowerLevel = AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM
+        // Setup transmitter and beacon settings from sharedPref
+        // If no settings exist, use default values
+        beaconTransmitter.advertiseMode = sharedPref.getInt(ADVERTISE_MODE_STRING, AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+        beaconTransmitter.advertiseTxPowerLevel = sharedPref.getInt(ADVERTISE_TX_POWER_STRING, AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+        beaconTx = sharedPref.getInt(BEACON_MEASURED_TX, beaconTx)
 
         // Fetch packageUUID if present. Generate and save new otherwise
-        val sharedPref = context.getPreferences(Context.MODE_PRIVATE)
 //        sharedPref.edit().remove(PACKAGE_UUID_STRING).apply()
         if (!sharedPref.contains(PACKAGE_UUID_STRING)) {
             packageUUID = UUID.randomUUID().toString()
@@ -119,6 +125,8 @@ class BLEController(private val context: Activity) {
             beaconTransmitter.stopAdvertising()
         }
         beaconTransmitter.advertiseMode = mode
+
+        sharedPref.edit().putInt(ADVERTISE_MODE_STRING, mode).apply()
     }
 
     fun updateAdvertiseTxPower(power: Int) {
@@ -126,6 +134,8 @@ class BLEController(private val context: Activity) {
             beaconTransmitter.stopAdvertising()
         }
         beaconTransmitter.advertiseTxPowerLevel = power
+
+        sharedPref.edit().putInt(ADVERTISE_TX_POWER_STRING, power).apply()
     }
 
     fun updateMeasuredTx(tx: Int) {
@@ -135,5 +145,15 @@ class BLEController(private val context: Activity) {
 
         beaconTx = tx
         createBeacon()
+
+        sharedPref.edit().putInt(BEACON_MEASURED_TX, tx).apply()
+    }
+
+    fun getAdvertiseTxPower(): Int {
+        return beaconTransmitter.advertiseTxPowerLevel
+    }
+
+    fun getAdvertiseMode(): Int {
+        return beaconTransmitter.advertiseMode
     }
 }

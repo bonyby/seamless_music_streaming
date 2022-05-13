@@ -31,30 +31,36 @@ class SettingsFragment() : Fragment() {
         val root = binding.root
         val mainInstance = MainActivity.instance()!!
         val settingsController = mainInstance.settingsController
+        val bleController = mainInstance.bleController
 
         val saveButton = binding.saveSettingsButton
         saveButton.setOnClickListener { settingsController.settingsSaved(this) }
 
-        // Initial setup of view
+        //// Initial setup of view
         val textUuid = binding.uuidLabel
         textUuid.text = getString(R.string.uuid_present_text, mainInstance.getPackageUUID())
 
+        // Advertise mode
         hzSpinner = binding.emitHzSpinner
         ArrayAdapter.createFromResource(mainInstance, R.array.emit_hz_array, android.R.layout.simple_spinner_item)
             .also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 hzSpinner.adapter = adapter
             }
+        hzSpinner.setSelection(bleController.getAdvertiseMode())
 
+        // Emission power
         txSpinner = binding.emitTxPowerSpinner
         ArrayAdapter.createFromResource(mainInstance, R.array.emit_tx_power_array, android.R.layout.simple_spinner_item)
             .also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 txSpinner.adapter = adapter
             }
+        txSpinner.setSelection(bleController.getAdvertiseTxPower())
 
+        // Measured tx
         measuredtext = binding.measuredPowerEditText
-        measuredtext.setText((-59).toString())
+        measuredtext.setText(bleController.beaconTx.toString())
 
         return root
     }
