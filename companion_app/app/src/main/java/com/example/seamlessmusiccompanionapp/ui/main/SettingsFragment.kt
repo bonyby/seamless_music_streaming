@@ -47,7 +47,7 @@ class SettingsFragment() : Fragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 hzSpinner.adapter = adapter
             }
-        hzSpinner.setSelection(bleController.getAdvertiseMode())
+        hzSpinner.setSelection(bleController.getAdvertiseMode()) // advertise mode is int in {0,1,2} so matches with index
 
         // Emission power
         txSpinner = binding.emitTxPowerSpinner
@@ -56,7 +56,7 @@ class SettingsFragment() : Fragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 txSpinner.adapter = adapter
             }
-        txSpinner.setSelection(bleController.getAdvertiseTxPower())
+        txSpinner.setSelection(bleController.getAdvertiseTxPower()) // advertise tx power is int in {0,1,2,3} so matches with index
 
         // Measured tx
         measuredtext = binding.measuredPowerEditText

@@ -97,6 +97,7 @@ class BLEController(private val context: Activity) {
         }
     }
 
+    // TODO: implement permissions and actual check them...
     private fun checkPermissions(): Boolean {
         return true
     }
