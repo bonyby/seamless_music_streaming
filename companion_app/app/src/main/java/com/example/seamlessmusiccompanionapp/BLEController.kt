@@ -4,11 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.bluetooth.le.AdvertiseSettings
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import com.example.seamlessmusiccompanionapp.conditions.Condition
+import com.example.seamlessmusiccompanionapp.conditions.MovementCondition
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
@@ -30,6 +31,7 @@ class BLEController(private val context: Activity) {
         }
     }
 
+    private val conditions: Array<Condition> = arrayOf(MovementCondition())
     private val bleCallback = BLECallback()
     private lateinit var beacon: Beacon
     private val beaconParser =
@@ -48,8 +50,12 @@ class BLEController(private val context: Activity) {
     init {
         // Setup transmitter and beacon settings from sharedPref
         // If no settings exist, use default values
-        beaconTransmitter.advertiseMode = sharedPref.getInt(ADVERTISE_MODE_STRING, AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-        beaconTransmitter.advertiseTxPowerLevel = sharedPref.getInt(ADVERTISE_TX_POWER_STRING, AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+        beaconTransmitter.advertiseMode =
+            sharedPref.getInt(ADVERTISE_MODE_STRING, AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+        beaconTransmitter.advertiseTxPowerLevel = sharedPref.getInt(
+            ADVERTISE_TX_POWER_STRING,
+            AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM
+        )
         beaconTx = sharedPref.getInt(BEACON_MEASURED_TX, beaconTx)
 
         // Fetch packageUUID if present. Generate and save new otherwise
@@ -90,16 +96,21 @@ class BLEController(private val context: Activity) {
     }
 
     private fun update() {
-        val allowed = checkPermissions()
+        val allowed = checkConditions()
 
-        if (allowed) {
-            emitting = emit()
-        }
+        emitting = if (allowed) emit() else false
     }
 
-    // TODO: implement permissions and actual check them...
-    private fun checkPermissions(): Boolean {
-        return true
+    private fun checkConditions(): Boolean {
+        var allMet = true
+        for (i in conditions.indices) {
+            if (!conditions[i].met()) {
+                allMet = false
+                break
+            }
+        }
+
+        return allMet
     }
 
     private fun emit(): Boolean {
@@ -110,6 +121,9 @@ class BLEController(private val context: Activity) {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.BLUETOOTH_ADMIN
+            ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.BLUETOOTH_ADVERTISE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             Log.d("proj", "Beacon measured Tx: ${beacon.txPower}")

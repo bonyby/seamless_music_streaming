@@ -42,11 +42,12 @@ class MainFragment() : Fragment() {
         val mainInstance = MainActivity.instance()!!
         val bleController = mainInstance.bleController
         bleController.emittingListeners.add { state -> updateEmittingVisuals(state) }
+        updateEmittingVisuals(true) // ensure that the visuals are created no matter what
         return root
     }
 
     private fun updateEmittingVisuals(state: Boolean) {
-        Log.d("proj", "update emitting visuals called")
+        Log.d("proj", "update emitting visuals called. State: $state")
         textMain.text = if (state) "EMITTING" else "NOT EMITTING"
         textMain.setTextColor(Color.parseColor(if (state) EMITTING_TEXT_COLOR else NOT_EMITTING_TEXT_COLOR))
         textMain.setBackgroundColor(Color.parseColor(if (state) EMITTING_BACKGROUND_COLOR else NOT_EMITTING_BACKGROUND_COLOR))

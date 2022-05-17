@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.seamlessmusiccompanionapp">
 
-<!--    &lt;!&ndash; Request legacy Bluetooth permissions on older devices. &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.BLUETOOTH"-->
-<!--        android:maxSdkVersion="30" />-->
-<!--    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"-->
-<!--        android:maxSdkVersion="30" />-->
+    <!--    &lt;!&ndash; Request legacy Bluetooth permissions on older devices. &ndash;&gt;-->
+    <!--    <uses-permission android:name="android.permission.BLUETOOTH"-->
+    <!--        android:maxSdkVersion="30" />-->
+    <!--    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"-->
+    <!--        android:maxSdkVersion="30" />-->
 
-<!--    &lt;!&ndash; Needed only if your app looks for Bluetooth devices.-->
-<!--         If your app doesn't use Bluetooth scan results to derive physical-->
-<!--         location information, you can strongly assert that your app-->
-<!--         doesn't derive physical location. &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:maxSdkVersion="30" tools:replace="maxSdkVersion" />-->
+    <!--    &lt;!&ndash; Needed only if your app looks for Bluetooth devices.-->
+    <!--         If your app doesn't use Bluetooth scan results to derive physical-->
+    <!--         location information, you can strongly assert that your app-->
+    <!--         doesn't derive physical location. &ndash;&gt;-->
+    <!--    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:maxSdkVersion="30" tools:replace="maxSdkVersion" />-->
 
-<!--    &lt;!&ndash; Needed only if your app makes the device discoverable to Bluetooth-->
-<!--         devices. &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" tools:remove="android:maxSdkVersion"/>-->
+    <!--    &lt;!&ndash; Needed only if your app makes the device discoverable to Bluetooth-->
+    <!--         devices. &ndash;&gt;-->
+    <!--    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" tools:remove="android:maxSdkVersion"/>-->
 
-<!--    &lt;!&ndash; Needed only if your app communicates with already-paired Bluetooth-->
-<!--         devices. &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" tools:remove="android:maxSdkVersion"/>-->
+    <!--    &lt;!&ndash; Needed only if your app communicates with already-paired Bluetooth-->
+    <!--         devices. &ndash;&gt;-->
+    <!--    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" tools:remove="android:maxSdkVersion"/>-->
 
-<!--    &lt;!&ndash; Needed only if your app uses Bluetooth scan results to derive physical location. &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:remove="android:maxSdkVersion"/>-->
-<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:remove="android:maxSdkVersion"/>-->
+    <!--    &lt;!&ndash; Needed only if your app uses Bluetooth scan results to derive physical location. &ndash;&gt;-->
+    <!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:remove="android:maxSdkVersion"/>-->
+    <!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:remove="android:maxSdkVersion"/>-->
 
-<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" tools:remove="android:maxSdkVersion"/>-->
+    <!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" tools:remove="android:maxSdkVersion"/>-->
 
     <!-- Request legacy Bluetooth permissions on older devices. -->
-    <uses-permission android:name="android.permission.BLUETOOTH"
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
         android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
         android:maxSdkVersion="30" />
 
     <!-- Needed only if your app looks for Bluetooth devices.
@@ -56,10 +59,18 @@
        Android 10 (API level 29) and higher. -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
-    <uses-feature android:name="android.hardware.bluetooth" android:required="true"/>
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
-    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS"
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission
+        android:name="android.permission.LOCAL_MAC_ADDRESS"
         tools:ignore="ProtectedPermissions" />
     <application
         android:allowBackup="true"
@@ -83,9 +94,13 @@
         <!-- Required for Android 10 (API level 29) and higher. -->
         <service
             android:name="MainActivity"
-            android:foregroundServiceType="location" >
-        <!-- Any inner elements would go here. -->
+            android:foregroundServiceType="location">
+            <!-- Any inner elements would go here. -->
         </service>
+        <receiver
+            android:name=".ActivityController"
+            android:exported="false"
+            android:permission="android.permission.ACTIVITY_RECOGNITION" />
     </application>
 
 </manifest>
