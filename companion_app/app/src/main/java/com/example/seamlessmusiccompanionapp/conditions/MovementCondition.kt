@@ -45,12 +45,12 @@ class MovementCondition : Condition {
         return moving
     }
 
-    private fun ensureActivityRecognitionPermissions() {
+//    private fun ensureActivityRecognitionPermissions() {
 //        if (mainInstance.checkSelfPermission(Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
 //            mainInstance.requestPermissions(
 //                arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
 //                MainActivity.ACTIVITY_RECOGNITION_CODE
 //            )
 //        }
-    }
+//    }
 }
