@@ -97,10 +97,6 @@
             android:foregroundServiceType="location">
             <!-- Any inner elements would go here. -->
         </service>
-        <receiver
-            android:name=".ActivityController"
-            android:exported="false"
-            android:permission="android.permission.ACTIVITY_RECOGNITION" />
     </application>
 
 </manifest>

@@ -22,18 +22,14 @@ import com.google.android.material.tabs.TabLayout
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var client: ActivityRecognitionClient
     private lateinit var binding: ActivityMainBinding
     lateinit var bleController: BLEController
     lateinit var settingsController: SettingsController
-    private lateinit var activityController: ActivityController
 
 
     companion object {
         private var instance: MainActivity? = null
         private const val BLUETOOTH_PERMISSION_CODE = 100 // Arbitrary number
-        const val TRANSITIONS_RECEIVER_ACTION =
-            BuildConfig.APPLICATION_ID + "TRANSITIONS_RECEIVER_ACTION"
         const val ACTIVITY_RECOGNITION_CODE = 20 // Arbitrary number
 
         fun instance(): MainActivity? {
@@ -47,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         instance = this
         bleController = BLEController(this)
         settingsController = SettingsController()
-        client = ActivityRecognition.getClient(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -73,27 +68,6 @@ class MainActivity : AppCompatActivity() {
         ) {
             requestPermissions(permissions1, BLUETOOTH_PERMISSION_CODE)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        activityController = ActivityController()
-//        registerReceiver(activityController, IntentFilter(TRANSITIONS_RECEIVER_ACTION))
-        val transitions = activityController.getTransitions()
-        Log.d("proj", "transitions: $transitions")
-        val request = ActivityTransitionRequest(transitions)
-
-        client
-            .requestActivityTransitionUpdates(request, getPendingIntent())
-            .addOnSuccessListener { Log.d("proj", "Request success") }
-            .addOnFailureListener { Log.d("proj", "Request failure") }
-    }
-
-    private fun getPendingIntent(): PendingIntent {
-//        val intent = Intent(TRANSITIONS_RECEIVER_ACTION, null, this, ActivityController::class.java)
-        val intent = Intent(this, activityController::class.java)
-        return PendingIntent.getBroadcast(this, 166, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     override fun onRequestPermissionsResult(
