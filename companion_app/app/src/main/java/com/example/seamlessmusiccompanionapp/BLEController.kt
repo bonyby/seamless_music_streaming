@@ -104,6 +104,11 @@ class BLEController(private val context: Activity) {
     private fun update() {
         val allowed = checkConditions()
 
+        // Stop advertising if switched from allowed to not allowed
+        if (emitting && !allowed) {
+            beaconTransmitter.stopAdvertising()
+        }
+
         emitting = if (allowed) emit() else false
     }
 
