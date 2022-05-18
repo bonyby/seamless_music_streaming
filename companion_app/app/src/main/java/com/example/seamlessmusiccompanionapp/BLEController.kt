@@ -141,6 +141,7 @@ class BLEController(private val context: Activity) {
             Log.d("proj", "Beacon measured Tx: ${beacon.txPower}")
             beaconTransmitter.startAdvertising(beacon, bleCallback)
         } else {
+            Log.d("proj", "no permission")
             return false
         }
 
