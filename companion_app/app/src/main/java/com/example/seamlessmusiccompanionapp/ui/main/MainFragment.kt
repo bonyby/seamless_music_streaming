@@ -51,7 +51,7 @@ class MainFragment() : Fragment() {
         val emittingSwitch = binding.emittingSwitch
         emittingSwitch.isChecked = true
         emittingSwitch.setOnCheckedChangeListener { _, state ->
-            switchableCondition?.setPermitted(
+            switchableCondition?.setEnabled(
                 state
             )
         }

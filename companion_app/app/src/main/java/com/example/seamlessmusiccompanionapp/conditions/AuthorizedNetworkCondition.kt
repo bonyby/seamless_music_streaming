@@ -6,6 +6,7 @@ import com.example.seamlessmusiccompanionapp.MainActivity
 import com.example.seamlessmusiccompanionapp.SettingsController
 
 class AuthorizedNetworkCondition : Condition {
+    private var isEnabled = true
     private val mainInstance = MainActivity.instance()!!
     private var settingsController: SettingsController? = null
 
@@ -14,9 +15,17 @@ class AuthorizedNetworkCondition : Condition {
     }
 
     override fun met(): Boolean {
+        if (!isEnabled) {
+            return true
+        }
+
         ensurePermissions()
 
         return onAuthorizedNetwork()
+    }
+
+    override fun setEnabled(state: Boolean) {
+        isEnabled = state
     }
 
     private fun onAuthorizedNetwork(): Boolean {

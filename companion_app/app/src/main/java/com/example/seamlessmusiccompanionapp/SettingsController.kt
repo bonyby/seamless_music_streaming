@@ -12,6 +12,7 @@ class SettingsController() {
     var data: AppSettingsData = AppSettingsDataBuilder().build()
 
     private var mainInstance = MainActivity.instance()!!
+    private val bleController = mainInstance.bleController
     private val wifiManager = mainInstance.getSystemService(Context.WIFI_SERVICE) as WifiManager
     private val authorizedNetworks = mutableListOf<String>()
     private val spinnerIdToAdvertiseMode = mapOf(
@@ -26,6 +27,11 @@ class SettingsController() {
         2 to AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM,
         3 to AdvertiseSettings.ADVERTISE_TX_POWER_HIGH
     )
+
+    companion object {
+        const val MOVEMENT_CONDITION_CODE = 0
+        const val NETWORK_CONDITION_CODE = 1
+    }
 
     init {
         Log.d("proj", "authorizedNetworks: $authorizedNetworks")
@@ -75,6 +81,11 @@ class SettingsController() {
 
         val curWifi = wifiManager.connectionInfo
         return authorizedNetworks.contains(curWifi.ssid)
+    }
+
+    fun setConditionEnabled(code: Int, isEnabled: Boolean) {
+        val cond = bleController.conditions[code]
+        cond.setEnabled(isEnabled)
     }
 }
 

@@ -17,7 +17,8 @@ import android.widget.Toast
 import com.example.seamlessmusiccompanionapp.BuildConfig
 import com.google.android.gms.location.*
 
-class MovementCondition : Condition {
+class MovementCondition() : Condition {
+    private var isEnabled = true
     private val mainInstance: MainActivity = MainActivity.instance()!!
     private var moving = false
     private val timeoutHandler = Handler()
@@ -50,6 +51,10 @@ class MovementCondition : Condition {
     }
 
     override fun met(): Boolean {
+        if (!isEnabled) {
+            return true
+        }
+
         // Bail out fast if currently emitting to prevent timeout
         if (timeoutPreventionActive) {
             return true
@@ -75,6 +80,10 @@ class MovementCondition : Condition {
         }
 
         return moving
+    }
+
+    override fun setEnabled(state: Boolean) {
+        isEnabled = state
     }
 
 //    private fun ensureActivityRecognitionPermissions() {

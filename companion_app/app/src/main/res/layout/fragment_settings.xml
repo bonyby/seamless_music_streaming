@@ -114,6 +114,22 @@
                 android:text="AUTHORIZE" />
         </LinearLayout>
 
+        <Switch
+            android:id="@+id/moveSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="48dp"
+            android:text="Movement condition"
+            tools:checked="true" />
+
+        <Switch
+            android:id="@+id/networkSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="48dp"
+            android:text="Network condition"
+            tools:checked="true" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

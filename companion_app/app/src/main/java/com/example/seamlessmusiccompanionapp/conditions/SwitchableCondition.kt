@@ -1,13 +1,13 @@
 package com.example.seamlessmusiccompanionapp.conditions
 
 class SwitchableCondition : Condition {
-    private var permitted = true
+    private var isEnabled = true
 
     override fun met(): Boolean {
-        return permitted
+        return isEnabled
     }
 
-    fun setPermitted(state: Boolean) {
-        permitted = state
+    override fun setEnabled(state: Boolean) {
+        isEnabled = state
     }
 }

@@ -36,8 +36,9 @@ class BLEController(private val context: Activity) {
 
     val switchableCondition = SwitchableCondition()
     private val authorizedNetworkCondition = AuthorizedNetworkCondition()
-    private val conditions: Array<Condition> =
-        arrayOf(MovementCondition(), switchableCondition, authorizedNetworkCondition)
+    private val movementCondition = MovementCondition()
+    val conditions: Array<Condition> =
+        arrayOf(movementCondition, authorizedNetworkCondition, switchableCondition) // The order of these conditions are important for accessing them in SettingsController when setting isEnabled
     private val bleCallback = BLECallback()
     private lateinit var beacon: Beacon
     private val beaconParser =

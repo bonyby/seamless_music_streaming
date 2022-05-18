@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.seamlessmusiccompanionapp.MainActivity
 import com.example.seamlessmusiccompanionapp.R
+import com.example.seamlessmusiccompanionapp.SettingsController
 import com.example.seamlessmusiccompanionapp.databinding.FragmentSettingsBinding
 
 class SettingsFragment() : Fragment() {
@@ -70,6 +71,20 @@ class SettingsFragment() : Fragment() {
             val result = settingsController.authorizeNetwork()
             Toast.makeText(mainInstance, if (result) "Network Authorized" else "Could not authorize. Network might already be authorized", Toast.LENGTH_LONG).show()
         }
+
+        // Movement condition switch
+        val moveSwitch = binding.moveSwitch
+        moveSwitch.setOnCheckedChangeListener { _, state ->
+            settingsController.setConditionEnabled(SettingsController.MOVEMENT_CONDITION_CODE, state)
+        }
+        moveSwitch.isChecked = true
+
+        // Network condition switch
+        val networkSwitch = binding.networkSwitch
+        networkSwitch.setOnCheckedChangeListener { _, state ->
+            settingsController.setConditionEnabled(SettingsController.NETWORK_CONDITION_CODE, state)
+        }
+        networkSwitch.isChecked = true
 
         return root
     }
