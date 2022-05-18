@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.example.seamlessmusiccompanionapp.conditions.Condition
 import com.example.seamlessmusiccompanionapp.conditions.MovementCondition
+import com.example.seamlessmusiccompanionapp.conditions.SwitchableCondition
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
@@ -31,7 +32,8 @@ class BLEController(private val context: Activity) {
         }
     }
 
-    private val conditions: Array<Condition> = arrayOf(MovementCondition())
+    val switchableCondition = SwitchableCondition()
+    private val conditions: Array<Condition> = arrayOf(MovementCondition(), switchableCondition)
     private val bleCallback = BLECallback()
     private lateinit var beacon: Beacon
     private val beaconParser =

@@ -7,10 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.example.seamlessmusiccompanionapp.BLEController
 import com.example.seamlessmusiccompanionapp.MainActivity
+import com.example.seamlessmusiccompanionapp.conditions.SwitchableCondition
 import com.example.seamlessmusiccompanionapp.databinding.FragmentMainBinding
 import org.w3c.dom.Text
 import kotlin.properties.Delegates
@@ -41,8 +44,18 @@ class MainFragment() : Fragment() {
 
         val mainInstance = MainActivity.instance()!!
         val bleController = mainInstance.bleController
+        val switchableCondition: SwitchableCondition? = bleController.switchableCondition
         bleController.emittingListeners.add { state -> updateEmittingVisuals(state) }
         updateEmittingVisuals(true) // ensure that the visuals are created no matter what
+
+        val emittingSwitch = binding.emittingSwitch
+        emittingSwitch.isChecked = true
+        emittingSwitch.setOnCheckedChangeListener { _, state ->
+            switchableCondition?.setPermitted(
+                state
+            )
+        }
+
         return root
     }
 
