@@ -24,7 +24,7 @@ class BLEController(private val context: Activity) {
     var minor: String = "1"
     var beaconTx: Int = -59
     var emittingListeners = arrayListOf<(Boolean) -> Unit>()
-    private var emitting: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
+    var emitting: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue == newValue) {
             return@observable
         }
@@ -32,10 +32,12 @@ class BLEController(private val context: Activity) {
             it(newValue)
         }
     }
+        private set
 
     val switchableCondition = SwitchableCondition()
-    val authorizedNetworkCondition = AuthorizedNetworkCondition()
-    private val conditions: Array<Condition> = arrayOf(MovementCondition(), switchableCondition, authorizedNetworkCondition)
+    private val authorizedNetworkCondition = AuthorizedNetworkCondition()
+    private val conditions: Array<Condition> =
+        arrayOf(MovementCondition(), switchableCondition, authorizedNetworkCondition)
     private val bleCallback = BLECallback()
     private lateinit var beacon: Beacon
     private val beaconParser =

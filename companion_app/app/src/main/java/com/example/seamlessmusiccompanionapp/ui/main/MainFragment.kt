@@ -46,7 +46,7 @@ class MainFragment() : Fragment() {
         val bleController = mainInstance.bleController
         val switchableCondition: SwitchableCondition? = bleController.switchableCondition
         bleController.emittingListeners.add { state -> updateEmittingVisuals(state) }
-        updateEmittingVisuals(true) // ensure that the visuals are created no matter what
+        updateEmittingVisuals(bleController.emitting) // ensure that the visuals are created no matter what
 
         val emittingSwitch = binding.emittingSwitch
         emittingSwitch.isChecked = true

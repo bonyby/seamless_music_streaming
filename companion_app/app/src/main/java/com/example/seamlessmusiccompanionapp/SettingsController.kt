@@ -27,6 +27,10 @@ class SettingsController() {
         3 to AdvertiseSettings.ADVERTISE_TX_POWER_HIGH
     )
 
+    init {
+        Log.d("proj", "authorizedNetworks: $authorizedNetworks")
+    }
+
     fun settingsSaved(settingsFrag: SettingsFragment) {
         data = AppSettingsDataBuilder()
             .setAdvertiseMode(spinnerIdToAdvertiseMode[settingsFrag.hzSpinner.selectedItemId.toInt()]!!)
@@ -36,7 +40,7 @@ class SettingsController() {
         mainInstance.updateSettings(data)
     }
 
-    fun authorizeNetwork(): Boolean {
+    private fun wifiAvailable(): Boolean {
         if (mainInstance.checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
             return false
         }
@@ -45,15 +49,33 @@ class SettingsController() {
             return false
         }
 
+        return true
+    }
+
+    fun authorizeNetwork(): Boolean {
+        if (!wifiAvailable()) {
+            return false
+        }
+
         val curWifi = wifiManager.connectionInfo
 
-        if(authorizedNetworks.contains(curWifi.ssid)) {
+        if (authorizedNetworks.contains(curWifi.ssid)) {
             return false
         }
 
         authorizedNetworks.add(curWifi.ssid)
 
         return true
+    }
+
+    fun onAuthorizedNetwork(): Boolean {
+        if (!wifiAvailable()) {
+            return false
+        }
+
+        val curWifi = wifiManager.connectionInfo
+        Log.d("proj", "Test: ${authorizedNetworks.contains(curWifi.ssid)}")
+        return authorizedNetworks.contains(curWifi.ssid)
     }
 }
 
