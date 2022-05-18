@@ -1,12 +1,14 @@
 package com.example.seamlessmusiccompanionapp.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.seamlessmusiccompanionapp.MainActivity
 import com.example.seamlessmusiccompanionapp.R
@@ -61,6 +63,13 @@ class SettingsFragment() : Fragment() {
         // Measured tx
         measuredtext = binding.measuredPowerEditText
         measuredtext.setText(bleController.beaconTx.toString())
+
+        // Authorize Network button
+        val authButton = binding.authorizeButton
+        authButton.setOnClickListener {
+            val result = settingsController.authorizeNetwork()
+            Toast.makeText(mainInstance, if (result) "Network Authorized" else "Could not authorize. Network might already be authorized", Toast.LENGTH_LONG).show()
+        }
 
         return root
     }

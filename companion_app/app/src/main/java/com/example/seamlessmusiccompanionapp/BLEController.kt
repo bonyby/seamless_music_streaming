@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import com.example.seamlessmusiccompanionapp.conditions.AuthorizedNetworkCondition
 import com.example.seamlessmusiccompanionapp.conditions.Condition
 import com.example.seamlessmusiccompanionapp.conditions.MovementCondition
 import com.example.seamlessmusiccompanionapp.conditions.SwitchableCondition
@@ -33,7 +34,8 @@ class BLEController(private val context: Activity) {
     }
 
     val switchableCondition = SwitchableCondition()
-    private val conditions: Array<Condition> = arrayOf(MovementCondition(), switchableCondition)
+    val authorizedNetworkCondition = AuthorizedNetworkCondition()
+    private val conditions: Array<Condition> = arrayOf(MovementCondition(), switchableCondition, authorizedNetworkCondition)
     private val bleCallback = BLECallback()
     private lateinit var beacon: Beacon
     private val beaconParser =
