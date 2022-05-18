@@ -74,7 +74,6 @@ class SettingsController() {
         }
 
         val curWifi = wifiManager.connectionInfo
-        Log.d("proj", "Test: ${authorizedNetworks.contains(curWifi.ssid)}")
         return authorizedNetworks.contains(curWifi.ssid)
     }
 }
