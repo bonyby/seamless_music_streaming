@@ -1,0 +1,5 @@
+Thorbjørns Smartphone Room Presence:
+    homeAssistantPi: 314
+    roomAssistantPi3: 92
+    smartMirrorPi: 228
+

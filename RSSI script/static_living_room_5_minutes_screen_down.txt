@@ -1,0 +1,10 @@
+Thorbjørns Smartphone Room Presence:
+    homeAssistantPi: 2070
+    roomAssistantPi3: 128
+
+Bos Smartphone Room Presence:
+    homeAssistantPi: 1677
+
+Thorbjørns Smartwatch Room Presence:
+    homeAssistantPi: 440
+

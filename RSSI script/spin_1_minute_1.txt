@@ -1,0 +1,4 @@
+Bos Smartphone Room Presence:
+    roomAssistantPi3: 334
+    homeAssistantPi: 390
+

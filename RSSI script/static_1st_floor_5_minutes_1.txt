@@ -1,0 +1,11 @@
+Bos Smartphone Room Presence:
+    roomAssistantPi2: 1332
+    roomAssistantPi1: 166
+
+Thorbjørns Smartphone Room Presence:
+    roomAssistantPi2: 2219
+
+Thorbjørns Smartwatch Room Presence:
+    roomAssistantPi2: 198
+    roomAssistantPi1: 233
+
